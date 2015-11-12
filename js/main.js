@@ -20,7 +20,7 @@ $( document ).ready(function() {
 		$(".session-time").text(sessionLength);
 	}
 	
-	function newSession() {
+	function newSession() {c
 		$(".time").text(sessionLength);
 	}
 	
@@ -83,7 +83,7 @@ $( document ).ready(function() {
 	newSession();
 	
 	var sessionTimer = $.timer(function() {
-		
+		alert('nothing');
 	});
 	
   function updateTimer() {
