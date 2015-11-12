@@ -1,7 +1,7 @@
 var breakLength = 5;
 var sessionLength = 25;
 var currentLength = sessionLength;
-var paused = false
+var paused = false;
 
 function formatTime(time) {
     time = time / 10;
