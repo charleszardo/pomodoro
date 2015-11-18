@@ -135,4 +135,12 @@ $( document ).ready(function() {
 			$('.time').timer('pause');
 		}
 	})
+	
+	clock = $('.your-clock').FlipClock({
+		autoStart: false,
+		countdown: true
+	});
+	
+	clock.setTime(sessionLen * 60);
+	clock.start();
 });
