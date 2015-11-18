@@ -1,7 +1,7 @@
 var breakLen = 1;
 var sessionLen = 1;
 var paused = true;
-var sessionRunning = false;
+var sessionRunning = true;
 var breakRunning = true;
 
 function minToSecString(min) {
@@ -125,10 +125,8 @@ $( document ).ready(function() {
 	
 	$(".session").click(function (){
 		if (!sessionRunning && !breakRunning) {
-			// sessionRunning = true;
-			// resetTimer(sessionLen);
-			// paused = false;
 			newTimer(sessionLen, false);
+			breakRunning = false;
 		} else if (paused) {
 			paused = !paused;
 			$('.time').timer('resume');
