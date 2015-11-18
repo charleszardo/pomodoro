@@ -1,8 +1,8 @@
-var breakLen = 1;
-var sessionLen = 1;
+var breakLen = 0.1;
+var sessionLen = 0.1;
 var paused = true;
-var sessionRunning = true;
-var breakRunning = true;
+var sessionRunning = false;
+var breakRunning = false;
 
 function minToSecString(min) {
 	var sec = min * 60;
@@ -25,23 +25,6 @@ $( document ).ready(function() {
 	
 	function updateSessionLen() {
 		$(".session-time").text(sessionLen);
-	}
-	
-	function newTimer(len, pause) {
-		$('.time').timer('remove');
-		$('.time').timer({
-			duration: minToSecString(len),
-			format: '%M:%S',
-			callback: sessionBreakSwitch
-		});
-		
-		if (pause) {
-			$('.time').timer('pause');
-		}
-		
-		paused = pause;
-		sessionRunning = !sessionRunning;
-		breakRunning = !breakRunning;
 	}
 	
 	function minToSec(min) {
@@ -93,9 +76,25 @@ $( document ).ready(function() {
 		}	
 	});
 	
+	clock = $('.your-clock').FlipClock({
+		autoStart: false,
+		countdown: true,
+	});
 	updateBreakLen();
 	updateSessionLen();
-	newTimer(sessionLen, true);
+	
+	function newTimer(len, pause) {
+		clock.setTime(sessionLen * 60);
+		clock.start();
+
+		if (pause) {
+			clock.stop();
+		}
+		
+		paused = pause;
+		sessionRunning = !sessionRunning;
+		breakRunning = !breakRunning;
+	}
 	
 	function switchTitle() {
 		if (breakRunning) {
@@ -129,18 +128,10 @@ $( document ).ready(function() {
 			breakRunning = false;
 		} else if (paused) {
 			paused = !paused;
-			$('.time').timer('resume');
+			clock.start();
 		} else {
 			paused = !paused;
-			$('.time').timer('pause');
+			clock.stop();
 		}
 	})
-	
-	clock = $('.your-clock').FlipClock({
-		autoStart: false,
-		countdown: true
-	});
-	
-	clock.setTime(sessionLen * 60);
-	clock.start();
 });
