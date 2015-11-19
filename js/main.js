@@ -1,5 +1,5 @@
 var breakLen = 0.1;
-var sessionLen = 0.1;
+var sessionLen = 1;
 var paused = true;
 var sessionRunning = false;
 var breakRunning = false;
@@ -79,6 +79,7 @@ $( document ).ready(function() {
 	clock = $('.your-clock').FlipClock({
 		autoStart: false,
 		countdown: true,
+		stop: handleStop,
 	});
 	updateBreakLen();
 	updateSessionLen();
@@ -111,6 +112,20 @@ $( document ).ready(function() {
 		} else {
 			newTimer(sessionLen, false)
 		}
+	}
+	
+	function handleStop() {
+		clock.face.stop();
+		clock.timer.stop(callback);
+		for(var x in clock.lists) {
+			if (clock.lists.hasOwnProperty(x)) {
+				clock.lists[x].stop();
+			}
+		}
+		
+		if (paused) {
+			sessionBreakSwitch();
+		}	
 	}
 	
 	function resetTimer (len) {
