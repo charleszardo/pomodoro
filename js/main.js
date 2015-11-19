@@ -4,12 +4,6 @@ var paused = true;
 var sessionRunning = false;
 var breakRunning = false;
 
-function minToSecString(min) {
-	var sec = min * 60;
-	var final = String(sec) + "s";
-	return final;
-}
-
 function formatTime(time) {
     time = time / 10;
     var min = parseInt(time / 6000),
@@ -27,8 +21,8 @@ $( document ).ready(function() {
 		$(".session-time").text(sessionLen);
 	}
 	
-	function minToSec(min) {
-		return min * 60;
+	function minToMilSec(min) {
+		return min * 60 * 1000;
 	}
 	
 	$(".break-red").click(function(){
@@ -76,26 +70,31 @@ $( document ).ready(function() {
 		}	
 	});
 	
-	clock = $('.your-clock').FlipClock({
-		autoStart: false,
-		countdown: true,
-		stop: handleStop,
-	});
+	function newTimer(len, pause) {
+		var curTime = new Date().getTime();
+		len = minToMilSec(len) + curTime;
+		$clock = $('#clock');
+
+		$clock.countdown(len, function(event) {
+	    $(this).html(event.strftime('%H:%M:%S'));
+	  });
+		
+		if (pause) {
+			$clock.countdown('pause');
+		}
+	}
+	
+	$clock = $('#clock');
+	var curTime = new Date().getTime();
+	var cdLen = minToMilSec(sessionLen) + curTime;
+	$clock.countdown(cdLen, function(event) {
+    $(this).html(event.strftime('%H:%M:%S'));
+  });
+	
+	$clock.countdown('stop');
+	
 	updateBreakLen();
 	updateSessionLen();
-	
-	function newTimer(len, pause) {
-		clock.setTime(sessionLen * 60);
-		clock.start();
-
-		if (pause) {
-			clock.stop();
-		}
-		
-		paused = pause;
-		sessionRunning = !sessionRunning;
-		breakRunning = !breakRunning;
-	}
 	
 	function switchTitle() {
 		if (breakRunning) {
@@ -114,39 +113,18 @@ $( document ).ready(function() {
 		}
 	}
 	
-	function handleStop() {
-		clock.face.stop();
-		clock.timer.stop(callback);
-		for(var x in clock.lists) {
-			if (clock.lists.hasOwnProperty(x)) {
-				clock.lists[x].stop();
-			}
-		}
-		
-		if (paused) {
-			sessionBreakSwitch();
-		}	
-	}
-	
-	function resetTimer (len) {
-		$('.time').timer('remove');
-		$('.time').timer({
-			duration: minToSecString(len),
-			format: '%M:%S',
-			callback: sessionBreakSwitch
-		});
-	}
-	
 	$(".session").click(function (){
 		if (!sessionRunning && !breakRunning) {
-			newTimer(sessionLen, false);
+			$clock.countdown('start');
+			sessionRunning = true;
 			breakRunning = false;
+			paused = false;
 		} else if (paused) {
 			paused = !paused;
-			clock.start();
+			$clock.countdown('start');
 		} else {
 			paused = !paused;
-			clock.stop();
+			$clock.countdown('stop');
 		}
 	})
 });
