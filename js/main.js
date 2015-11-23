@@ -1,4 +1,4 @@
-var breakLen = 0.1;
+var breakLen = 1;
 var sessionLen = 1;
 var paused = true;
 var sessionRunning = false;
@@ -84,6 +84,25 @@ $( document ).ready(function() {
 		}
 	}
 	
+	function timeToMilSec(time) {
+		time = time.split(":")
+		var hr = Number(time[0]);
+		var min = Number(time[1]);
+		var sec = Number(time[2]);
+		return ((hr * 60 + min) * 60 + sec) * 1000;
+	}
+	
+	console.log(timeToMilSec("00:01:00"));
+	
+	function replaceTime() {
+		var time = $clock.text();
+		var ms = timeToMilSec(time);
+		var clock = $("#clock");
+		clock.countdown(ms, function(event) {
+	    $(this).html(event.strftime('%H:%M:%S'));
+	  });
+	}
+	
 	$clock = $('#clock');
 	var curTime = new Date().getTime();
 	var cdLen = minToMilSec(sessionLen) + curTime;
@@ -115,7 +134,8 @@ $( document ).ready(function() {
 	
 	$(".session").click(function (){
 		if (!sessionRunning && !breakRunning) {
-			$clock.countdown('start');
+			replaceTime();
+			// $clock.countdown('start');
 			sessionRunning = true;
 			breakRunning = false;
 			paused = false;
