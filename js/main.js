@@ -143,15 +143,16 @@ $( document ).ready(function() {
 	updateSessionLen();
 
 	function switchTitle() {
-		if (breakRunning) {
-			$(".session-break").text("Session")
-		} else {
+		if (sessionRunning) {
 			$(".session-break").text("Break")
+		} else {
+			$(".session-break").text("Session")
 		}
 	}
 
 	function sessionBreakSwitch() {
 		switchClocks();
+		switchTitle();
 		if (sessionRunning) {
 			$('#breakTimer').runner('reset');
 			$('#breakTimer').runner('start');
@@ -162,42 +163,13 @@ $( document ).ready(function() {
 		
 		sessionRunning = !sessionRunning;
 		breakRunning = !breakRunning;
-		// switchTitle();
+		
 		// if (sessionRunning) {
 		// 	newTimer(breakLen, false)
 		// } else {
 		// 	newTimer(sessionLen, false)
 		// }
 	}
-	
-	function newSessionTimer(time) {
-		$('#sessionTimer').runner({
-			countdown: true,
-	    startAt: time,
-			stopAt: 0,
-			format: function(value) {
-				return formatTime(value);
-			}
-		}).on('runnerFinish', function(eventObject, info) {
-			sessionBreakSwitch();
-		});
-	}
-	
-	function newBreakTimer(time) {
-		$('#breakTimer').runner({
-			countdown: true,
-	    startAt: time,
-			stopAt: 0,
-			format: function(value) {
-				return formatTime(value);
-			}
-		}).on('runnerFinish', function(eventObject, info) {
-			sessionBreakSwitch();
-		});
-	}
-	
-	
-	$('#breakTimer').hide();
 	
 	$('#sessionTimer').click(function() {
 	    $('#sessionTimer').runner('toggle');
