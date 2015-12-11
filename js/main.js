@@ -1,16 +1,16 @@
-var breakLen = 0.05;
-var sessionLen = 0.05;
+var breakLen = 0.1;
+var sessionLen = 0.1;
 var paused = true;
 var sessionRunning = true;
 var breakRunning = false;
 
-function formatTime(time) {
-    time = time / 10;
-    var min = parseInt(time / 6000),
-        sec = parseInt(time / 100) - (min * 60),
-        hundredths = pad(time - (sec * 100) - (min * 6000), 2);
-    return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
-}
+// function formatTime(time) {
+//     time = time / 10;
+//     var min = parseInt(time / 6000),
+//         sec = parseInt(time / 100) - (min * 60),
+//         hundredths = pad(time - (sec * 100) - (min * 6000), 2);
+//     return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
+// }
 
 function minToMilSec(min) {
 	return min * 60 * 1000;
@@ -30,13 +30,26 @@ function switchClocks() {
 	
 	if (breakRunning) {
 		$bt.hide();
-		//$bt.css("visibility", "hidden");
 		$st.show();
 	} else {
 		$st.hide();
-		//$st.css("visibility", "hidden");
 		$bt.show();
 	}
+}
+
+function formatTime(value) {
+  var sec = value / 1000;
+  var min = parseInt(sec / 60);
+  sec = parseInt(sec % 60);
+	
+	if (sec < 10) {
+		sec = "0" + sec
+	}
+	
+	if (min < 10) {
+		min = "0" + min
+	}
+  return (min + ":" + sec);
 }
 
 $( document ).ready(function() {
@@ -77,14 +90,53 @@ $( document ).ready(function() {
 		updateSessionLen();
 	});
 	
+	function reset(session) {
+		sessionRunning = true;
+		breakRunning = false;
+		paused = true;
+		
+		var $bt = $('#breakTimer');
+		var $st = $('#sessionTimer');
+		
+		$st.show();
+		$bt.hide();
+		
+		if (session) {
+			$st.runner({
+				countdown: true,
+	    	startAt: minToMilSec(sessionLen),
+				stopAt: 0,
+				format: function(value) {
+					return formatTime(value);
+				}
+			}).on('runnerFinish', function(eventObject, info) {
+			sessionBreakSwitch();
+			});
+		} else {
+			$bt.runner({
+				countdown: true,
+				startAt: minToMilSec(breakLen),
+				stopAt: 0,
+				format: function(value) {
+					return formatTime(value);
+				}
+			}).on('runnerFinish', function(eventObject, info) {
+			sessionBreakSwitch();
+			});
+		}
+		
+		$st.runner('reset');
+		$bt.runner('reset');
+	}
+	
 	function updateBreakLen() {
 		$(".break-time").text(breakLen);
-		newBreakTimer(minToMilSec(breakLen));
+		reset(false);
 	}
 
 	function updateSessionLen() {
 		$(".session-time").text(sessionLen);
-		newSessionTimer(minToMilSec(sessionLen));
+		reset(true);
 	}
 	
 	updateBreakLen();
@@ -122,7 +174,10 @@ $( document ).ready(function() {
 		$('#sessionTimer').runner({
 			countdown: true,
 	    startAt: time,
-			stopAt: 0
+			stopAt: 0,
+			format: function(value) {
+				return formatTime(value);
+			}
 		}).on('runnerFinish', function(eventObject, info) {
 			sessionBreakSwitch();
 		});
@@ -132,7 +187,10 @@ $( document ).ready(function() {
 		$('#breakTimer').runner({
 			countdown: true,
 	    startAt: time,
-			stopAt: 0
+			stopAt: 0,
+			format: function(value) {
+				return formatTime(value);
+			}
 		}).on('runnerFinish', function(eventObject, info) {
 			sessionBreakSwitch();
 		});
