@@ -4,24 +4,8 @@ var paused = true;
 var sessionRunning = true;
 var breakRunning = false;
 
-// function formatTime(time) {
-//     time = time / 10;
-//     var min = parseInt(time / 6000),
-//         sec = parseInt(time / 100) - (min * 60),
-//         hundredths = pad(time - (sec * 100) - (min * 6000), 2);
-//     return (min > 0 ? pad(min, 2) : "00") + ":" + pad(sec, 2) + ":" + hundredths;
-// }
-
 function minToMilSec(min) {
 	return min * 60 * 1000;
-}
-
-function timeToMilSec(time) {
-	time = time.split(":")
-	var hr = Number(time[0]);
-	var min = Number(time[1]);
-	var sec = Number(time[2]);
-	return ((hr * 60 + min) * 60 + sec) * 1000;
 }
 
 function switchClocks() {
@@ -50,6 +34,14 @@ function formatTime(value) {
 		min = "0" + min
 	}
   return (min + ":" + sec);
+}
+
+function switchTitle() {
+	if (sessionRunning) {
+		$(".session-break").text("Break")
+	} else {
+		$(".session-break").text("Session")
+	}
 }
 
 $( document ).ready(function() {
@@ -90,6 +82,26 @@ $( document ).ready(function() {
 		updateSessionLen();
 	});
 	
+	$('#sessionTimer').click(function() {
+	    $('#sessionTimer').runner('toggle');
+			paused = !paused;
+	});
+	
+	$('#breakTimer').click(function() {
+	    $('#breakTimer').runner('toggle');
+			paused = !paused;
+	});
+	
+	function updateBreakLen() {
+		$(".break-time").text(breakLen);
+		reset(false);
+	}
+
+	function updateSessionLen() {
+		$(".session-time").text(sessionLen);
+		reset(true);
+	}
+	
 	function reset(session) {
 		sessionRunning = true;
 		breakRunning = false;
@@ -129,26 +141,8 @@ $( document ).ready(function() {
 		$bt.runner('reset');
 	}
 	
-	function updateBreakLen() {
-		$(".break-time").text(breakLen);
-		reset(false);
-	}
-
-	function updateSessionLen() {
-		$(".session-time").text(sessionLen);
-		reset(true);
-	}
-	
 	updateBreakLen();
 	updateSessionLen();
-
-	function switchTitle() {
-		if (sessionRunning) {
-			$(".session-break").text("Break")
-		} else {
-			$(".session-break").text("Session")
-		}
-	}
 
 	function sessionBreakSwitch() {
 		switchClocks();
@@ -163,22 +157,8 @@ $( document ).ready(function() {
 		
 		sessionRunning = !sessionRunning;
 		breakRunning = !breakRunning;
-		
-		// if (sessionRunning) {
-		// 	newTimer(breakLen, false)
-		// } else {
-		// 	newTimer(sessionLen, false)
-		// }
 	}
 	
-	$('#sessionTimer').click(function() {
-	    $('#sessionTimer').runner('toggle');
-			paused = !paused;
-	});
-	
-	$('#breakTimer').click(function() {
-	    $('#breakTimer').runner('toggle');
-			paused = !paused;
-	});
+	reset(true);
 });
 
