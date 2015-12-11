@@ -24,23 +24,17 @@ function timeToMilSec(time) {
 	return ((hr * 60 + min) * 60 + sec) * 1000;
 }
 
-function updateBreakLen() {
-	$(".break-time").text(breakLen);
-}
-
-function updateSessionLen() {
-	$(".session-time").text(sessionLen);
-}
-
 function switchClocks() {
 	var $bt = $('#breakTimer');
 	var $st = $('#sessionTimer');
 	
 	if (breakRunning) {
 		$bt.hide();
+		//$bt.css("visibility", "hidden");
 		$st.show();
 	} else {
 		$st.hide();
+		//$st.css("visibility", "hidden");
 		$bt.show();
 	}
 }
@@ -72,12 +66,7 @@ $( document ).ready(function() {
 		if (sessionLen > 0) {
 			sessionLen -= 1;
 			updateSessionLen();
-
-			if (sessionRunning) {
-				newSession();
-			}
 		}
-
 	});
 
 	$(".session-add").click(function(){
@@ -86,14 +75,18 @@ $( document ).ready(function() {
 		}
 		sessionLen += 1;
 		updateSessionLen();
-
-		if (sessionRunning) {
-			newSession();
-		} else {
-			// newRunner(minToMilSec(sessionLen));
-		}
 	});
+	
+	function updateBreakLen() {
+		$(".break-time").text(breakLen);
+		newBreakTimer(minToMilSec(breakLen));
+	}
 
+	function updateSessionLen() {
+		$(".session-time").text(sessionLen);
+		newSessionTimer(minToMilSec(sessionLen));
+	}
+	
 	updateBreakLen();
 	updateSessionLen();
 
@@ -130,7 +123,7 @@ $( document ).ready(function() {
 			countdown: true,
 	    startAt: time,
 			stopAt: 0
-		}).on('runnerStop', function(eventObject, info) {
+		}).on('runnerFinish', function(eventObject, info) {
 			sessionBreakSwitch();
 		});
 	}
@@ -140,13 +133,11 @@ $( document ).ready(function() {
 			countdown: true,
 	    startAt: time,
 			stopAt: 0
-		}).on('runnerStop', function(eventObject, info) {
+		}).on('runnerFinish', function(eventObject, info) {
 			sessionBreakSwitch();
 		});
 	}
 	
-	newSessionTimer(minToMilSec(sessionLen));
-	newBreakTimer(minToMilSec(breakLen));
 	
 	$('#breakTimer').hide();
 	
