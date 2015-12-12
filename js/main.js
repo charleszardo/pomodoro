@@ -1,5 +1,5 @@
-var breakLen = 1;
-var sessionLen = 1;
+var breakLen = 0.1;
+var sessionLen = 0.1;
 var paused = true;
 var sessionRunning = true;
 var breakRunning = false;
@@ -43,6 +43,12 @@ function switchTitle() {
 		$(".session-break").text("Session")
 	}
 }
+
+function playSound() {
+	var sound = document.getElementById("audio");
+  sound.play()
+}
+
 
 $( document ).ready(function() {
 	// functionality to change break and session lengths
@@ -142,6 +148,7 @@ $( document ).ready(function() {
 	}
 
 	function sessionBreakSwitch() {
+		playSound();
 		switchClocks();
 		switchTitle();
 		if (sessionRunning) {
