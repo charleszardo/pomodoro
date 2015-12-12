@@ -4,6 +4,10 @@ body {
 	font-family: Open Sans, Arial;
 }
 
+header {
+	margin: 20px;
+}
+
 #pomodoro {
 	margin: 0 auto;
 	text-align: center;
@@ -11,6 +15,8 @@ body {
 
 .settings-box {
 	display: inline-block;
+	margin: 20px;
+	padding: 20px;
 }
 
 .label {
@@ -23,17 +29,20 @@ body {
   font-size: 2.5em;
   padding-left: 10px;
   padding-right: 10px;
+	cursor: pointer;
 }
 
 .session {
 	margin: 0 auto;
 	border: 4px #99CC00 solid;
-	border-radius: 125px;
-	width: 250px;
-	height: 250px;
+	border-radius: 50%;
+	width: 400px;
+	height: 400px;
+	cursor: pointer;
+	font-size: 4em;
 }
 
 .session-break {
-	line-height: 180px;
+	line-height: 150px;
 	font-size: .8em;
 }
