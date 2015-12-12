@@ -2,27 +2,26 @@
 <html>
 <head>
 	<title>Pomodoro Timer</title>
-	<link rel="stylesheet" type="text/css" href="css/flipclock.css">
 	<link rel="stylesheet" type="text/css" href="css/main.css">
 	<script src="js/jquery-2.1.4.min.js"></script>
 	<script src="js/jquery.runner-min.js"></script>
 	<script src="js/main.js"></script>
 </head>
 <body>
-	<div id="clock">
+	<div id="pomodoro">
 		<header>Pomodoro Timer</header>
 		<div class="variables">
 			<div class="settings-box" id="break-length">
-				<h4>Break Length</h4>
-				<button class="break-red">-</button>
-				<span class="break-time"></span>
-				<button class="break-add">+</button>
+				<div class="label">Break Length</div>
+				<div class="break-red adjustment">-</div>
+				<div class="break-time adjustment"></div>
+				<div class="break-add adjustment">+</div>
 			</div>
 			<div class="settings-box" id="session-length">
-				<h4>Session Length</h4>
-				<button class="session-red">-</button>
-				<span class="session-time"></span>
-				<button class="session-add">+</button>
+				<div class="label">Session Length</div>
+				<div class="session-red adjustment">-</div>
+				<div class="session-time adjustment"></div>
+				<div class="session-add adjustment">+</div>
 			</div>
 		</div>
 	
