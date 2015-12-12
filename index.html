@@ -9,29 +9,28 @@
 	<script src="js/main.js"></script>
 </head>
 <body>
-	<header>Pomodoro Timer</header>
-	<div class="variables">
-		<div class="break-length">
-			<h4>Break Length</h4>
-			<button class="break-red">-</button>
-			<span class="break-time"></span>
-			<button class="break-add">+</button>
+	<div id="clock">
+		<header>Pomodoro Timer</header>
+		<div class="variables">
+			<div class="settings-box" id="break-length">
+				<h4>Break Length</h4>
+				<button class="break-red">-</button>
+				<span class="break-time"></span>
+				<button class="break-add">+</button>
+			</div>
+			<div class="settings-box" id="session-length">
+				<h4>Session Length</h4>
+				<button class="session-red">-</button>
+				<span class="session-time"></span>
+				<button class="session-add">+</button>
+			</div>
 		</div>
-		<div class="session-length">
-			<h4>Session Length</h4>
-			<button class="session-red">-</button>
-			<span class="session-time"></span>
-			<button class="session-add">+</button>
+	
+		<div class="session">
+			<h2 class="session-break">Session</h2>
+			<span id="sessionTimer"></span>
+			<span id="breakTimer"></span>
 		</div>
 	</div>
-	
-	<div class="session">
-		<h2 class="session-break">Session</h2>
-		<span id="sessionTimer"></span>
-		<span id="breakTimer"></span>
-	</div>
-	
-	
-	
 </body>
 </html>

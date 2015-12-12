@@ -1,5 +1,5 @@
-var breakLen = 0.1;
-var sessionLen = 0.1;
+var breakLen = 1;
+var sessionLen = 1;
 var paused = true;
 var sessionRunning = true;
 var breakRunning = false;
@@ -140,9 +140,6 @@ $( document ).ready(function() {
 		$st.runner('reset');
 		$bt.runner('reset');
 	}
-	
-	updateBreakLen();
-	updateSessionLen();
 
 	function sessionBreakSwitch() {
 		switchClocks();
@@ -159,6 +156,7 @@ $( document ).ready(function() {
 		breakRunning = !breakRunning;
 	}
 	
-	reset(true);
+	updateBreakLen();
+	updateSessionLen();
 });
 
