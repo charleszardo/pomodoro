@@ -1,5 +1,5 @@
-var breakLen = 0.1;
-var sessionLen = 0.1;
+var breakLen = 5;
+var sessionLen = 25;
 var paused = true;
 var sessionRunning = true;
 var breakRunning = false;
